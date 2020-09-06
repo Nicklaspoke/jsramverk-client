@@ -1,21 +1,20 @@
 import React from 'react';
 import { Affix, Layout } from 'antd';
 import Nav from './Nav';
-const { Header } = Layout;
 
-export default function CHeader() {
+export default function Header() {
     return (
         <Affix offsetTop={0}>
-            <Header style={headerStyle}>
-                <h1 style={{ justifyContent: 'flex-end', color: '#fff' }}>JSRamverk Me-Page</h1>
+            <Layout.Header style={headerStyle}>
+                <h1 style={{ color: '#ddd' }}>JSRamverk Me-Page</h1>
                 <Nav />
-            </Header>
+            </Layout.Header>
         </Affix>
     );
 }
 
 const headerStyle = {
     display: 'flex',
-    // justifyContent: 'flex-start',
-    // backgroundColor: '#202020'
+    flexDirection: 'row',
+    height: '100%'
 };
