@@ -1,16 +1,16 @@
 import React from 'react'
-
 import { Layout } from 'antd';
 import { motion } from 'framer-motion';
-
-import PageTransitions from '../../PageTransitions'
+import { SlideInRight } from '../../PageAnimations'
 const { Content } = Layout;
+const { variations, transition } = SlideInRight
 
 export default function Index() {
     return (
-        <motion.div initial='out' animate='in' exit='out' variants={PageTransitions}>
+        <motion.div initial='initial' animate='in' exit='out' variants={variations} transition={transition}>
             <Content style={indexStyle}>
-                <h1>OwO Index Page</h1>
+                <h1>Well hello there fellow traveller</h1>
+
             </Content>
 
         </motion.div>
@@ -18,8 +18,8 @@ export default function Index() {
 }
 
 const indexStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    // minHeight: '100rem',
-    height: '100%'
+    textAlign: 'center',
+    position: 'absolute',
+    left: 0,
+    right: 0
 }

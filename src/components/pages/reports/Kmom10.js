@@ -1,15 +1,15 @@
 import React from 'react';
 import { Layout } from 'antd';
 import { motion } from 'framer-motion';
-import { PageTransitions } from '../../../PageAnimations';
+import { SlideInRight } from '../../../PageAnimations';
 import { ReportStyle } from '../../../ReusableStyles';
 
-
 const { Content } = Layout;
+const { variations, transition } = SlideInRight
 
 export default function Kmom10() {
     return (
-        <motion.div initial='out' animate='in' exit='out' variants={PageTransitions}>
+        <motion.div initial='initial' animate='in' exit='out' variants={variations} transition={transition}>
             <Content style={ReportStyle}>
                 <h1>Kmom10</h1>
             </Content>
