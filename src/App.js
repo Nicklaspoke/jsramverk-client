@@ -30,7 +30,6 @@ function App() {
                             <AnimatePresence>
                                 <Switch>
                                     <Route exact path='/' component={Index} />
-                                    {/* <Route exact path='/reports' component={Reports} /> */}
                                     <Route path='/reports/week/1' component={Kmom01} />
                                     <Route path='/reports/week/2' component={Kmom02} />
                                     <Route path='/reports/week/3' component={Kmom03} />
