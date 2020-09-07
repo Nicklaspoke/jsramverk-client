@@ -1,17 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,300&display=swap');
-@import '~antd/dist/antd.css';
+/* @import '~antd/dist/antd.css'; */
+@import '~antd/dist/antd.dark.css';
+/* @import '~antd/dist/antd.compact.css'; */
 
 * {
   font-family: 'Roboto', sans-serif;
 }
-/* html,
-body,
-#root {
-    height: 100%;
-    overflow: auto;
-} */
+html {
+    font-size: 100%;
+    line-height: 1.4;
+}
 
 body {
     overflow-y: scroll;
-    color: #333;
+}
+
+p {
+    font-size: 1rem;
 }

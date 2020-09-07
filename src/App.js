@@ -26,7 +26,7 @@ function App() {
                 <Header />
                 <Layout>
                     <Sidebar />
-                    <Layout style={{ minHeight: '80vh', backgroundColor: '#dedede', position: 'relative'}}>
+                    <Layout style={{ minHeight: '80vh', position: 'relative'}}>
                         <AnimatePresence>
                             <Switch location={location} key={location.pathname}>
                                 <Route exact path='/' component={Index} />
