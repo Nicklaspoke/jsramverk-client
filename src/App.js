@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion'
 import { Layout } from 'antd';
 import 'normalize.css';
@@ -19,32 +19,31 @@ import Kmom06 from './components/pages/reports/Kmom06';
 import Kmom10 from './components/pages/reports/Kmom10';
 
 function App() {
+    const location = useLocation();
     return (
-        <Router>
-            <div className="App">
+        <div className="App">
+            <Layout>
+                <Header />
                 <Layout>
-                    <Header />
-                    <Layout>
-                        <Sidebar />
-                        <Layout style={{minHeight: '87vh'}}>
-                            <AnimatePresence>
-                                <Switch>
-                                    <Route exact path='/' component={Index} />
-                                    <Route path='/reports/week/1' component={Kmom01} />
-                                    <Route path='/reports/week/2' component={Kmom02} />
-                                    <Route path='/reports/week/3' component={Kmom03} />
-                                    <Route path='/reports/week/4' component={Kmom04} />
-                                    <Route path='/reports/week/5' component={Kmom05} />
-                                    <Route path='/reports/week/6' component={Kmom06} />
-                                    <Route path='/reports/week/10' component={Kmom10} />
-                                </Switch>
-                            </AnimatePresence>
-                        </Layout>
+                    <Sidebar />
+                    <Layout style={{ minHeight: '80vh', backgroundColor: '#dedede', position: 'relative'}}>
+                        <AnimatePresence>
+                            <Switch location={location} key={location.pathname}>
+                                <Route exact path='/' component={Index} />
+                                <Route path='/reports/week/1' component={Kmom01} />
+                                <Route path='/reports/week/2' component={Kmom02} />
+                                <Route path='/reports/week/3' component={Kmom03} />
+                                <Route path='/reports/week/4' component={Kmom04} />
+                                <Route path='/reports/week/5' component={Kmom05} />
+                                <Route path='/reports/week/6' component={Kmom06} />
+                                <Route path='/reports/week/10' component={Kmom10} />
+                            </Switch>
+                        </AnimatePresence>
                     </Layout>
-                    <Footer />
                 </Layout>
-            </div>
-        </Router>
+                <Footer />
+            </Layout>
+        </div>
     );
 }
 
