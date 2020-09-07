@@ -1,4 +1,15 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# jsramverk-me-page
+
+## How to run the application
+
+### prerequisites
+* nodejs version >= 12 (developed on version 14, but should work with the latest lts)
+
+
+The easiest way to get the application up and running is to first use `npm i` to install all dependencies, after that use `npm start` to begin runnint the development server.
+Once the server has started, it can be accessed on localhost:3000
+
+<!-- This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
@@ -65,4 +76,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 ### `npm run build` fails to minify
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify -->
