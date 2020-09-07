@@ -13,8 +13,5 @@ body,
 
 body {
     overflow-y: scroll;
-}
-
-.contentContainer {
-    min-height: 20rem;
+    color: #333;
 }
