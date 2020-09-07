@@ -9,7 +9,7 @@ const { Content } = Layout;
 export default function Kmom10() {
     return (
         <Layout>
-            <ReportNav />
+
             <motion.div initial='out' animate='in' exit='out' variants={PageTransitions}>
                 <Content   style={{ padding: '1rem' }}>
                     <h1>Kmom10</h1>

@@ -20,6 +20,6 @@ export default function Index() {
 const indexStyle = {
     display: 'flex',
     justifyContent: 'center',
-    minHeight: '20rem',
+    // minHeight: '100rem',
     height: '100%'
 }

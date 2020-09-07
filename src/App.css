@@ -1,23 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,300&display=swap');
 @import '~antd/dist/antd.css';
 
-/* * {
+* {
   font-family: 'Roboto', sans-serif;
-} */
-html,
+}
+/* html,
 body,
 #root {
     height: 100%;
+    overflow: auto;
+} */
+
+body {
+    overflow-y: scroll;
 }
 
-.slide-in {
-    animation: moveFromRight 0.4s ease both;
-}
-
-@keyframes moveFromRight {
-    from { transform: translateX(100%); }
-}
-
-@keyframes moveToRight {
-    to { transform: translateX(100%); }
+.contentContainer {
+    min-height: 20rem;
 }
