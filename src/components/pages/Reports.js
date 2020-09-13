@@ -15,7 +15,6 @@ export default function Reports() {
     const [state, setState] = useState({});
     const location = useLocation();
     const week = location.pathname.substr(location.pathname.lastIndexOf('/') + 1);
-    console.log(week);
 
     useEffect(() => {
         retriveData();
