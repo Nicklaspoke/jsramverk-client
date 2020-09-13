@@ -20,6 +20,7 @@ export default function Nav() {
         context.setIsLoggedIn(false);
         history.push('/auth/login');
     };
+
     return (
         <Menu mode="horizontal" theme="dark" style={{ flex: '2', marginLeft: '0.5rem' }}>
             <Menu.Item icon={<HomeOutlined />}>

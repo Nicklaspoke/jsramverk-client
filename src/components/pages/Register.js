@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import AppContext from '../../AppContext';
 import { Form, Input, Button, Layout, Checkbox, Modal, Alert } from 'antd';
 import { PasswordInput } from 'antd-password-input-strength';
@@ -13,6 +13,8 @@ export default function Register() {
     const [state, setState] = useState({});
     const context = useContext(AppContext);
     let history = useHistory();
+    let location = useLocation();
+    console.log(location);
     const onFinish = async (values) => {
         const body = { email: values.email, password: values.password };
         const res = await fetch('http://localhost:8080/auth/register', {
