@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { Layout } from 'antd';
@@ -14,18 +14,41 @@ import Index from './components/pages/Index';
 import Reports from './components/pages/Reports';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
+import CreateReport from './components/pages/CreateReport';
 
 function App() {
     const location = useLocation();
 
     // Global state variables and functions
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [csrfToken, setCSRFToken] = useState('');
 
     const userSettings = {
         isLoggedIn: isLoggedIn,
+        csrfToken: csrfToken,
         setIsLoggedIn,
+        setCSRFToken,
     };
-
+    useEffect(() => {
+        const getCSRF = async () => {
+            const res = await fetch('/api/auth/get-csrf-token');
+            const data = await res.json();
+            userSettings.setCSRFToken(data.csrfToken);
+        };
+        const checkLogInStatus = async () => {
+            const res = await fetch('/api/auth/authCheck', {
+                headers: {
+                    'X-CSRF-Token': userSettings.csrfToken,
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (res.status === 200) {
+                userSettings.setIsLoggedIn(true);
+            }
+        };
+        getCSRF();
+        checkLogInStatus();
+    }, []);
     return (
         <AppContext.Provider value={userSettings}>
             <div className="App">
@@ -46,6 +69,7 @@ function App() {
                                     <Route path="/reports/week/7" component={Reports} />
                                     <Route path="/auth/login" component={Login} />
                                     <Route path="/auth/register" component={Register} />
+                                    <Route path="/reports/new" component={CreateReport} />
                                 </Switch>
                             </AnimatePresence>
                         </Layout>
