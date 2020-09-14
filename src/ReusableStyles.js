@@ -3,7 +3,7 @@
  */
 export const ReportStyle = {
     margin: '0.5rem 1.5rem 0 1.5rem',
-    position: 'absolute'
-}
+    position: 'absolute',
+};
 
-export default {ReportStyle}
+export default { ReportStyle };
