@@ -18,6 +18,7 @@ export default function Register() {
         const res = await fetch('http://localhost:8080/auth/register', {
             method: 'POST',
             headers: {
+                'X-CSRF-Token': context.csrfToken,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(body),
