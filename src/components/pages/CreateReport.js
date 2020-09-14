@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Form, Input, Button, Layout, Alert, Select } from 'antd';
+import { Form, Input, Button, Layout, Select, Modal } from 'antd';
 import { motion } from 'framer-motion';
 
 import Forbidden from '../layout/Forbidden';
@@ -46,8 +46,28 @@ export default function CreateReport() {
         getAvilableWeeks();
     }, []);
 
+    const errorModal = () => {
+        Modal.warning({
+            title: 'Missing Week Number',
+            content: 'Please select a week number before submitting',
+        });
+    };
     const onFinish = async (values) => {
-        console.log(values);
+        if (!values.week) {
+            errorModal();
+        } else {
+            const res = await fetch('/api/reports', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-Token': context.csrfToken,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+            });
+            if (res.status === 201) {
+                history.push(`/reports/week/${values.week}`);
+            }
+        }
     };
 
     return (
@@ -74,21 +94,22 @@ export default function CreateReport() {
                         }}
                     >
                         <Form.Item name="week" label="Week:">
-                            <Select
-                                style={{ maxWidth: '10%' }}
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Title of the report',
-                                    },
-                                ]}
-                            >
-                                {state.finishedLoading
-                                    ? state.avilableWeeks.map((week) => (
-                                          <Option value={week}>{week}</Option>
-                                      ))
-                                    : null}
-                            </Select>
+                            {state.finishedLoading ? (
+                                <Select
+                                    defaultValue="Select A Week"
+                                    style={{ maxWidth: '20%' }}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Title of the report',
+                                        },
+                                    ]}
+                                >
+                                    {state.avilableWeeks.map((week) => (
+                                        <Option value={week}>{week}</Option>
+                                    ))}
+                                </Select>
+                            ) : null}
                         </Form.Item>
                         <Form.Item
                             name="title"
