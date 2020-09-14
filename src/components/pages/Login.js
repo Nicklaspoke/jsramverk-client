@@ -26,7 +26,8 @@ export default function Login() {
             console.log(data);
             setState({
                 displayError: true,
-                ...data.error,
+                errorTitle: data.error.title,
+                errorDescription: data.error.description,
             });
         } else {
             setState({ displayError: false, errorTitle: '', errorDescription: '' });
