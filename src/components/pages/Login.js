@@ -13,9 +13,10 @@ export default function Login() {
     const context = useContext(AppContext);
     let history = useHistory();
     const onFinish = async (values) => {
-        const res = await fetch('http://localhost:8080/auth/login', {
+        const res = await fetch('/api/auth/login', {
             method: 'POST',
             headers: {
+                'X-CSRF-Token': context.csrfToken,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(values),
@@ -25,12 +26,10 @@ export default function Login() {
             console.log(data);
             setState({
                 displayError: true,
-                errorTitle: data.error.title,
-                errorDescription: data.error.description,
+                ...data.error,
             });
         } else {
             setState({ displayError: false, errorTitle: '', errorDescription: '' });
-            console.log(data.token);
             context.setIsLoggedIn(true);
             history.push('/');
         }

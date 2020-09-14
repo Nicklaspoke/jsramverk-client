@@ -21,15 +21,15 @@ export default function Reports() {
     }, []);
 
     const retriveData = async () => {
-        let res = await fetch(`http://localhost:8080/reports/week/${week}`);
+        let res = await fetch(`/api/reports/week/${week}`);
         const data = await res.json();
         if (data.error) {
             setState({ display404: true });
         } else {
-            console.log(data.data);
             setState({ display404: false, ...data.data });
         }
     };
+    console.log(state);
     return (
         <motion.div
             initial="initial"
