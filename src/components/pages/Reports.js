@@ -29,7 +29,7 @@ export default function Reports() {
             setState({ display404: false, ...data.data });
         }
     };
-    console.log(state);
+
     return (
         <motion.div
             initial="initial"
