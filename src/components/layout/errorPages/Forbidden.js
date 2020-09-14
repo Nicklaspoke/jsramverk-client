@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Result, Button, Image } from 'antd';
 
-export default function NotFound() {
+export default function Forbidden() {
     const history = useHistory();
     const goLogin = () => {
         history.push('/auth/login');
