@@ -8,6 +8,9 @@ import {
     LoginOutlined,
     LogoutOutlined,
     IdcardOutlined,
+    EditOutlined,
+    FormOutlined,
+    DiffOutlined,
 } from '@ant-design/icons';
 import AppContext from '../../AppContext';
 
@@ -18,6 +21,8 @@ export default function Sidebar() {
     const context = useContext(AppContext);
     let history = useHistory();
     const handleLogOut = () => {
+        const requestLogout = async () => await fetch('/api/auth/logout');
+        requestLogout();
         context.setIsLoggedIn(false);
         history.push('/auth/login');
     };
@@ -54,7 +59,17 @@ export default function Sidebar() {
                     <Menu.Item icon={<IdcardOutlined />}>
                         <Link to="/auth/register">Register New Account</Link>
                     </Menu.Item>
-                ) : null}
+                ) : (
+                    <SubMenu icon={<FormOutlined />} title="Content Management">
+                        <Menu.Item icon={<DiffOutlined />}>
+                            <Link to="/reports/new">New Report</Link>
+                        </Menu.Item>
+
+                        <Menu.Item icon={<EditOutlined />}>
+                            <Link to="/reports/edit">Edit Reports</Link>
+                        </Menu.Item>
+                    </SubMenu>
+                )}
                 {!context.isLoggedIn ? (
                     <Menu.Item icon={<LoginOutlined />}>
                         <Link to="/auth/login">Log In</Link>
