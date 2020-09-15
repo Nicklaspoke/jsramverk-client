@@ -2,10 +2,11 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Input, Button, Layout, Select, Modal } from 'antd';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
-import Forbidden from '../layout/Forbidden';
 import AppContext from '../../AppContext';
 
+import getErrorPage from '../../helpers/getErrorPage';
 import { SlideInRight } from '../../PageAnimations';
 const { variations, transition } = SlideInRight;
 
@@ -18,28 +19,25 @@ export default function CreateReport() {
 
     useEffect(() => {
         const getAvilableWeeks = async () => {
-            const res = await fetch('/api/auth/authCheck', {
-                headers: {
-                    'X-CSRF-Token': context.csrfToken,
-                    'Content-Type': 'application/json',
-                },
-            });
-            const data = await res.json();
-            if (data.error) {
-                setState({ displayErrorPage: true, finishedLoading: true });
-            } else {
-                const res = await fetch('/api/validate/avilableWeeks', {
-                    headers: {
-                        'X-CSRF-Token': context.csrfToken,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                const data = await res.json();
+            try {
+                await axios.get('/api/auth/authCheck');
+
+                let data = await axios.get('/api/validate/avilableWeeks');
+                data = data.data;
                 setState({
                     displayErrorPage: false,
                     avilableWeeks: data.data,
                     finishedLoading: true,
                 });
+            } catch (error) {
+                const status = error.response.status;
+                if (status) {
+                    setState({
+                        displayErrorPage: true,
+                        finishedLoading: true,
+                        errorPage: getErrorPage(status),
+                    });
+                }
             }
         };
 
@@ -79,7 +77,7 @@ export default function CreateReport() {
             transition={transition}
         >
             {state.displayErrorPage ? (
-                <Forbidden />
+                <state.errorPage />
             ) : (
                 <Layout style={{ position: 'absolute', minWidth: '50%' }}>
                     <h1 style={{ marginLeft: '5rem' }}>Create New Report</h1>

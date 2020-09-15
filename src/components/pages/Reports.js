@@ -3,9 +3,10 @@ import { Layout } from 'antd';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
+import axios from 'axios';
 import { GithubOutlined } from '@ant-design/icons';
 
-import NotFound from '../layout/NotFound';
+import getErrorPage from '../../helpers/getErrorPage';
 import { ReportStyle } from '../../ReusableStyles';
 import { SlideInRight } from '../../PageAnimations';
 const { Content } = Layout;
@@ -17,18 +18,25 @@ export default function Reports() {
     const week = location.pathname.substr(location.pathname.lastIndexOf('/') + 1);
 
     useEffect(() => {
+        const retriveData = async () => {
+            try {
+                let data = await axios.get(`/api/reports/week/${week}`);
+                data = data.data;
+
+                setState({ displayErrorPage: false, ...data.data });
+            } catch (error) {
+                const status = error.response.status;
+                if (status) {
+                    setState({
+                        displayErrorPage: true,
+                        errorPage: getErrorPage(status),
+                    });
+                }
+            }
+        };
+
         retriveData();
     }, []);
-
-    const retriveData = async () => {
-        let res = await fetch(`/api/reports/week/${week}`);
-        const data = await res.json();
-        if (data.error) {
-            setState({ display404: true });
-        } else {
-            setState({ display404: false, ...data.data });
-        }
-    };
 
     return (
         <motion.div
@@ -38,8 +46,8 @@ export default function Reports() {
             variants={variations}
             transition={transition}
         >
-            {state.display404 ? (
-                <NotFound />
+            {state.displayErrorPage ? (
+                <state.errorPage />
             ) : (
                 <Content style={ReportStyle}>
                     <h1>{state.title}</h1>

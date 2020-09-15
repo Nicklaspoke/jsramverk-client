@@ -5,33 +5,47 @@ import { Form, Input, Button, Layout, Checkbox, Modal, Alert } from 'antd';
 import { PasswordInput } from 'antd-password-input-strength';
 import { motion } from 'framer-motion';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
 import { SlideInRight } from '../../PageAnimations';
+import getErrorPage from '../../helpers/getErrorPage';
 const { variations, transition } = SlideInRight;
 
 export default function Register() {
     const [state, setState] = useState({});
     const context = useContext(AppContext);
     let history = useHistory();
+
     const onFinish = async (values) => {
-        const body = { email: values.email, password: values.password };
-        const res = await fetch('http://localhost:8080/auth/register', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-Token': context.csrfToken,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-        });
-        const data = await res.json();
-        if (data.error) {
-            setState({
-                displayError: true,
-                errorTitle: data.error.title,
-                errorDescription: data.error.description,
-            });
-        } else {
+        try {
+            await axios.post(
+                '/api/auth/register',
+                {
+                    email: values.email,
+                    password: values.password,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                },
+            );
+
             successModal();
+        } catch (error) {
+            const { status, data } = error.response;
+            if (status === 400) {
+                setState({
+                    errorTitle: data.error.title,
+                    errorDescription: data.error.description,
+                    displayErrorMessage: true,
+                });
+            } else if (status === 500) {
+                setState({
+                    displayErrorPage: true,
+                    errorPage: getErrorPage(status),
+                });
+            }
         }
     };
 
@@ -87,132 +101,139 @@ export default function Register() {
             variants={variations}
             transition={transition}
         >
-            <Layout style={{ position: 'absolute' }}>
-                <h1 style={{ marginLeft: '5rem' }}>Register New Account</h1>
-                {state.displayError && (
-                    <Alert
-                        style={{
-                            minWidth: '20%',
-                            marginLeft: '5rem',
-                            marginTop: '0',
-                            marginBottom: '1rem',
-                        }}
-                        message={state.errorTitle}
-                        description={state.errorDescription}
-                        type="error"
-                    />
-                )}
-                <Form
-                    name="register"
-                    className="login-form"
-                    style={{ minWidth: '20%', marginLeft: '5rem', marginTop: '0' }}
-                    onFinish={onFinish}
-                >
-                    <Form.Item
-                        name="email"
-                        label="Email"
-                        rules={[
-                            {
-                                type: 'email',
-                                message: 'The Input is not a valid email address',
-                            },
-                            {
-                                required: true,
-                                message: 'Input a email you want to register with',
-                            },
-                        ]}
-                    >
-                        <Input
-                            prefix={<UserOutlined className="site-form-item-icon" />}
-                            placeholder="Email"
+            {' '}
+            {state.displayErrorPage ? (
+                <state.errorPage />
+            ) : (
+                <Layout style={{ position: 'absolute' }}>
+                    <h1 style={{ marginLeft: '5rem' }}>Register New Account</h1>
+                    {state.displayErrorMessage && (
+                        <Alert
+                            style={{
+                                minWidth: '20%',
+                                marginLeft: '5rem',
+                                marginTop: '0',
+                                marginBottom: '1rem',
+                            }}
+                            message={state.errorTitle}
+                            description={state.errorDescription}
+                            type="error"
                         />
-                    </Form.Item>
-                    <Form.Item
-                        name="confirm-email"
-                        label="Confirm email"
-                        dependencies={['email']}
-                        hasFeedback
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Confirm Email',
-                            },
-                            ({ getFieldValue }) => ({
-                                validator(rule, value) {
-                                    if (!value || getFieldValue('email') === value) {
-                                        return Promise.resolve();
-                                    }
-
-                                    return Promise.reject('Email addresses does not match');
+                    )}
+                    <Form
+                        name="register"
+                        className="login-form"
+                        style={{ minWidth: '20%', marginLeft: '5rem', marginTop: '0' }}
+                        onFinish={onFinish}
+                    >
+                        <Form.Item
+                            name="email"
+                            label="Email"
+                            rules={[
+                                {
+                                    type: 'email',
+                                    message: 'The Input is not a valid email address',
                                 },
-                            }),
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="password"
-                        label="Password"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your password',
-                            },
-                        ]}
-                        hasFeedback
-                    >
-                        <PasswordInput prefix={<LockOutlined className="site-form-item-icon" />} />
-                    </Form.Item>
-                    <Form.Item
-                        name="confirm-password"
-                        label="Confirm password"
-                        dependencies={['password']}
-                        hasFeedback
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Confirm Password',
-                            },
-                            ({ getFieldValue }) => ({
-                                validator(rule, value) {
-                                    if (!value || getFieldValue('password') === value) {
-                                        return Promise.resolve();
-                                    }
-
-                                    return Promise.reject('Password does not match');
+                                {
+                                    required: true,
+                                    message: 'Input a email you want to register with',
                                 },
-                            }),
-                        ]}
-                    >
-                        <Input.Password />
-                    </Form.Item>
-                    <Form.Item
-                        name="agreement"
-                        valuePropName="checked"
-                        rules={[
-                            {
-                                validator: (_, value) =>
-                                    value
-                                        ? Promise.resolve()
-                                        : Promise.reject(
-                                              'Please read and accept the user agreement',
-                                          ),
-                            },
-                        ]}
-                    >
-                        <Checkbox>
-                            By clicking this button I confim that I have read and understod the User
-                            agreement
-                        </Checkbox>
-                    </Form.Item>
-                    <a onClick={showAgreement}>User Agreement</a>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            Register Account
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </Layout>
+                            ]}
+                        >
+                            <Input
+                                prefix={<UserOutlined className="site-form-item-icon" />}
+                                placeholder="Email"
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            name="confirm-email"
+                            label="Confirm email"
+                            dependencies={['email']}
+                            hasFeedback
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Confirm Email',
+                                },
+                                ({ getFieldValue }) => ({
+                                    validator(rule, value) {
+                                        if (!value || getFieldValue('email') === value) {
+                                            return Promise.resolve();
+                                        }
+
+                                        return Promise.reject('Email addresses does not match');
+                                    },
+                                }),
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
+                        <Form.Item
+                            name="password"
+                            label="Password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your password',
+                                },
+                            ]}
+                            hasFeedback
+                        >
+                            <PasswordInput
+                                prefix={<LockOutlined className="site-form-item-icon" />}
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            name="confirm-password"
+                            label="Confirm password"
+                            dependencies={['password']}
+                            hasFeedback
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Confirm Password',
+                                },
+                                ({ getFieldValue }) => ({
+                                    validator(rule, value) {
+                                        if (!value || getFieldValue('password') === value) {
+                                            return Promise.resolve();
+                                        }
+
+                                        return Promise.reject('Password does not match');
+                                    },
+                                }),
+                            ]}
+                        >
+                            <Input.Password />
+                        </Form.Item>
+                        <Form.Item
+                            name="agreement"
+                            valuePropName="checked"
+                            rules={[
+                                {
+                                    validator: (_, value) =>
+                                        value
+                                            ? Promise.resolve()
+                                            : Promise.reject(
+                                                  'Please read and accept the user agreement',
+                                              ),
+                                },
+                            ]}
+                        >
+                            <Checkbox>
+                                By clicking this button I confim that I have read and understod the
+                                User agreement
+                            </Checkbox>
+                        </Form.Item>
+                        <a onClick={showAgreement}>User Agreement</a>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                                Register Account
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Layout>
+            )}
         </motion.div>
     );
 }
