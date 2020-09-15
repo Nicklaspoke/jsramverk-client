@@ -16,7 +16,7 @@ export default function Login() {
     let history = useHistory();
     const onFinish = async (values) => {
         try {
-            let data = await axios.post(
+            await axios.post(
                 '/api/auth/login',
                 { ...values },
                 {
@@ -25,7 +25,6 @@ export default function Login() {
                     },
                 },
             );
-            data = data.data;
 
             setState({ displayErrorMessage: false });
             context.setIsLoggedIn(true);

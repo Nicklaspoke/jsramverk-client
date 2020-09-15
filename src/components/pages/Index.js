@@ -14,7 +14,6 @@ export default function Index() {
             try {
                 let data = await axios('/api/');
                 data = data.data;
-                console.log(data);
 
                 setState({ displayErrorPage: false, presentation: data.data.content });
             } catch (error) {

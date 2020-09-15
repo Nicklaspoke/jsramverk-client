@@ -12,6 +12,7 @@ import {
     FormOutlined,
     DiffOutlined,
 } from '@ant-design/icons';
+import axios from 'axios';
 import AppContext from '../../AppContext';
 
 const { SubMenu } = Menu;
@@ -20,7 +21,7 @@ export default function Nav() {
     const context = useContext(AppContext);
     let history = useHistory();
     const handleLogOut = () => {
-        const requestLogout = async () => await fetch('/api/auth/logout');
+        const requestLogout = async () => await axios.get('/api/auth/logout');
         requestLogout();
         context.setIsLoggedIn(false);
         history.push('/auth/login');

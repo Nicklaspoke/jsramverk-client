@@ -1,10 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import AppContext from '../../AppContext';
 import { Form, Input, Button, Layout, Checkbox, Modal, Alert } from 'antd';
 import { PasswordInput } from 'antd-password-input-strength';
 import { motion } from 'framer-motion';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, AuditOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 import { SlideInRight } from '../../PageAnimations';
@@ -13,7 +12,6 @@ const { variations, transition } = SlideInRight;
 
 export default function Register() {
     const [state, setState] = useState({});
-    const context = useContext(AppContext);
     let history = useHistory();
 
     const onFinish = async (values) => {
@@ -225,12 +223,19 @@ export default function Register() {
                                 User agreement
                             </Checkbox>
                         </Form.Item>
-                        <a onClick={showAgreement}>User Agreement</a>
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit">
-                                Register Account
-                            </Button>
-                        </Form.Item>
+                        <Button type="primary" htmlType="submit">
+                            Register Account
+                        </Button>
+                        <Button
+                            type="default"
+                            onClick={showAgreement}
+                            icon={<AuditOutlined />}
+                            style={{ marginLeft: '1rem' }}
+                        >
+                            User Agreement
+                        </Button>
+
+                        <Form.Item></Form.Item>
                     </Form>
                 </Layout>
             )}

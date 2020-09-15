@@ -24,7 +24,6 @@ function App() {
     // Global state variables and functions
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [csrfToken, setCSRFToken] = useState('');
-
     const userSettings = {
         isLoggedIn: isLoggedIn,
         csrfToken: csrfToken,
@@ -38,19 +37,15 @@ function App() {
             axios.defaults.headers['X-CSRF-Token'] = res.data.csrfToken;
         };
         const checkLogInStatus = async () => {
-            const res = await fetch('/api/auth/authCheck', {
-                headers: {
-                    'X-CSRF-Token': userSettings.csrfToken,
-                    'Content-Type': 'application/json',
-                },
-            });
-            if (res.status === 200) {
+            try {
+                await axios.get('/api/auth/authCheck');
+
                 userSettings.setIsLoggedIn(true);
-            }
+            } catch (error) {}
         };
         getCSRF();
         checkLogInStatus();
-    }, []);
+    }, [userSettings]);
     return (
         <AppContext.Provider value={userSettings}>
             <div className="App">
@@ -62,13 +57,7 @@ function App() {
                             <AnimatePresence>
                                 <Switch location={location} key={location.pathname}>
                                     <Route exact path="/" component={Index} />
-                                    <Route path="/reports/week/1" component={Reports} />
-                                    <Route path="/reports/week/2" component={Reports} />
-                                    <Route path="/reports/week/3" component={Reports} />
-                                    <Route path="/reports/week/4" component={Reports} />
-                                    <Route path="/reports/week/5" component={Reports} />
-                                    <Route path="/reports/week/6" component={Reports} />
-                                    <Route path="/reports/week/7" component={Reports} />
+                                    <Route path="/reports/week/:week/" component={Reports} />
                                     <Route path="/auth/login" component={Login} />
                                     <Route path="/auth/register" component={Register} />
                                     <Route path="/reports/new" component={CreateReport} />

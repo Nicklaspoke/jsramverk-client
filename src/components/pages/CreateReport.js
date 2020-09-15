@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Form, Input, Button, Layout, Select, Modal } from 'antd';
+import { Form, Input, Button, Layout, Select, Alert } from 'antd';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-
-import AppContext from '../../AppContext';
 
 import getErrorPage from '../../helpers/getErrorPage';
 import { SlideInRight } from '../../PageAnimations';
@@ -14,7 +12,6 @@ const { Option } = Select;
 
 export default function CreateReport() {
     const [state, setState] = useState({ avilableWeeks: [1] });
-    const context = useContext(AppContext);
     let history = useHistory();
 
     useEffect(() => {
@@ -44,26 +41,36 @@ export default function CreateReport() {
         getAvilableWeeks();
     }, []);
 
-    const errorModal = () => {
-        Modal.warning({
-            title: 'Missing Week Number',
-            content: 'Please select a week number before submitting',
-        });
+    const handleChange = (e) => {
+        setState({ ...state, weekSelected: true });
     };
     const onFinish = async (values) => {
-        if (!values.week) {
-            errorModal();
-        } else {
-            const res = await fetch('/api/reports', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-Token': context.csrfToken,
-                    'Content-Type': 'application/json',
+        try {
+            await axios.post(
+                '/api/reports',
+                { ...values },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 },
-                body: JSON.stringify(values),
-            });
-            if (res.status === 201) {
-                history.push(`/reports/week/${values.week}`);
+            );
+
+            setState({ displayErrorPage: false, displayErrorMessage: false });
+            history.push(`/reports/week/${values.week}`);
+        } catch (error) {
+            const { status, data } = error.response;
+            if (status === 400) {
+                setState({
+                    errorTitle: data.error.title,
+                    errorDescription: data.error.description,
+                    displayErrorMessage: true,
+                });
+            } else if (status === 500) {
+                setState({
+                    displayErrorPage: true,
+                    errorPage: getErrorPage(status),
+                });
             }
         }
     };
@@ -81,6 +88,19 @@ export default function CreateReport() {
             ) : (
                 <Layout style={{ position: 'absolute', minWidth: '50%' }}>
                     <h1 style={{ marginLeft: '5rem' }}>Create New Report</h1>
+                    {state.displayErrorMessage && (
+                        <Alert
+                            style={{
+                                minWidth: '20%',
+                                marginLeft: '5rem',
+                                marginTop: '0',
+                                marginBottom: '1rem',
+                            }}
+                            message={state.errorTitle}
+                            description={state.errorDescription}
+                            type="error"
+                        />
+                    )}
                     <Form
                         layout="vertical"
                         name="create-report"
@@ -94,6 +114,7 @@ export default function CreateReport() {
                         <Form.Item name="week" label="Week:">
                             {state.finishedLoading ? (
                                 <Select
+                                    onChange={handleChange}
                                     defaultValue="Select A Week"
                                     style={{ maxWidth: '20%' }}
                                     rules={[
@@ -140,7 +161,7 @@ export default function CreateReport() {
                             />
                         </Form.Item>
                         <Form.Item>
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" disabled={!state.weekSelected}>
                                 Create Report
                             </Button>
                         </Form.Item>

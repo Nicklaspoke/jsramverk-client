@@ -36,7 +36,7 @@ export default function Reports() {
         };
 
         retriveData();
-    }, []);
+    }, [week]);
 
     return (
         <motion.div
