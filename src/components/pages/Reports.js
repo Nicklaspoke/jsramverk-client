@@ -58,7 +58,17 @@ export default function Reports() {
                         rel="noopener noreferrer"
                         style={{ textDecoration: 'none' }}
                     >
-                        Github
+                        Github; Client
+                    </a>
+                    <br />
+                    <GithubOutlined />
+                    <a
+                        href="https://github.com/Nicklaspoke/jsramverk-server"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ textDecoration: 'none' }}
+                    >
+                        Github; Server
                     </a>
                     <ReactMarkdown source={state.content} />
                 </Content>
