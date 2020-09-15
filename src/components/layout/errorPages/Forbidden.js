@@ -11,7 +11,7 @@ export default function Forbidden() {
         <Result
             icon={
                 <Image
-                    width="50%"
+                    width="30%"
                     alt="403 Image"
                     preview="false"
                     src="https://derpicdn.net/img/view/2020/5/25/2357844.png"
