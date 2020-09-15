@@ -16,5 +16,5 @@ export default function Header() {
 const headerStyle = {
     display: 'flex',
     flexDirection: 'row',
-    height: '100%'
+    height: '100%',
 };
