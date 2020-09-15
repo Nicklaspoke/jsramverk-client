@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import axios from 'axios';
 import { Layout } from 'antd';
 import 'normalize.css';
 import './App.css';
@@ -15,6 +16,7 @@ import Reports from './components/pages/Reports';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
 import CreateReport from './components/pages/CreateReport';
+import EditReport from './components/pages/EditReport';
 
 function App() {
     const location = useLocation();
@@ -31,9 +33,9 @@ function App() {
     };
     useEffect(() => {
         const getCSRF = async () => {
-            const res = await fetch('/api/auth/get-csrf-token');
-            const data = await res.json();
-            userSettings.setCSRFToken(data.csrfToken);
+            const res = await axios.get('/api/auth/get-csrf-token');
+            userSettings.setCSRFToken(res.data.csrfToken);
+            axios.defaults.headers['X-CSRF-Token'] = res.data.csrfToken;
         };
         const checkLogInStatus = async () => {
             const res = await fetch('/api/auth/authCheck', {
@@ -70,6 +72,7 @@ function App() {
                                     <Route path="/auth/login" component={Login} />
                                     <Route path="/auth/register" component={Register} />
                                     <Route path="/reports/new" component={CreateReport} />
+                                    <Route path="/reports/edit" component={EditReport} />
                                 </Switch>
                             </AnimatePresence>
                         </Layout>
