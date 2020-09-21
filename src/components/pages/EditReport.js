@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 
 import AppContext from '../../AppContext';
-
 import getErrorPage from '../../helpers/getErrorPage';
 import { SlideInRight } from '../../PageAnimations';
 const { variations, transition } = SlideInRight;
@@ -33,6 +32,7 @@ export default function EditReport() {
             } catch (error) {
                 const status = error.response.status;
                 if (status) {
+                    context.setIsLoggedIn(false);
                     setState({
                         displayErrorPage: true,
                         finishedLoading: true,

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Input, Button, Layout, Select, Alert } from 'antd';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 
+import AppContext from '../../AppContext';
 import getErrorPage from '../../helpers/getErrorPage';
 import { SlideInRight } from '../../PageAnimations';
 const { variations, transition } = SlideInRight;
@@ -12,6 +13,7 @@ const { Option } = Select;
 
 export default function CreateReport() {
     const [state, setState] = useState({ avilableWeeks: [1] });
+    const context = useContext(AppContext);
     let history = useHistory();
 
     useEffect(() => {
@@ -29,6 +31,7 @@ export default function CreateReport() {
             } catch (error) {
                 const status = error.response.status;
                 if (status) {
+                    context.setIsLoggedIn(false);
                     setState({
                         displayErrorPage: true,
                         finishedLoading: true,

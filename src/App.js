@@ -41,11 +41,13 @@ function App() {
                 await axios.get('/api/auth/authCheck');
 
                 userSettings.setIsLoggedIn(true);
-            } catch (error) {}
+            } catch (error) {
+                userSettings.setIsLoggedIn(false);
+            }
         };
         getCSRF();
         checkLogInStatus();
-    }, [userSettings]);
+    }, []);
     return (
         <AppContext.Provider value={userSettings}>
             <div className="App">
