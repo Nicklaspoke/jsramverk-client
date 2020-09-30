@@ -12,7 +12,7 @@ export default function Index() {
     useEffect(() => {
         const getPresentation = async () => {
             try {
-                let data = await axios('/api/');
+                let data = await axios('https://jsramverk.nicklaspoke.se/api/');
                 data = data.data;
 
                 setState({ displayErrorPage: false, presentation: data.data.content });

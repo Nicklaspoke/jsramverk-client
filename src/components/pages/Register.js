@@ -17,7 +17,7 @@ export default function Register() {
     const onFinish = async (values) => {
         try {
             await axios.post(
-                '/api/auth/register',
+                'https://jsramverk.nicklaspoke.se/api/auth/register',
                 {
                     email: values.email,
                     password: values.password,

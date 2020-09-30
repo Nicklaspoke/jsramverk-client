@@ -20,7 +20,9 @@ export default function Reports() {
     useEffect(() => {
         const retriveData = async () => {
             try {
-                let data = await axios.get(`/api/reports/week/${week}`);
+                let data = await axios.get(
+                    `https://jsramverk.nicklaspoke.se/api/reports/week/${week}`,
+                );
                 data = data.data;
 
                 setState({ displayErrorPage: false, ...data.data });

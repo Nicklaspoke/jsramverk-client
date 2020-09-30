@@ -17,7 +17,7 @@ export default function Login() {
     const onFinish = async (values) => {
         try {
             await axios.post(
-                '/api/auth/login',
+                'https://jsramverk.nicklaspoke.se/api/auth/login',
                 { ...values },
                 {
                     headers: {

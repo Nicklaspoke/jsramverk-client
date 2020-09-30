@@ -19,9 +19,11 @@ export default function CreateReport() {
     useEffect(() => {
         const getAvilableWeeks = async () => {
             try {
-                await axios.get('/api/auth/authCheck');
+                await axios.get('https://jsramverk.nicklaspoke.se/api/auth/authCheck');
 
-                let data = await axios.get('/api/validate/avilableWeeks');
+                let data = await axios.get(
+                    'https://jsramverk.nicklaspoke.se/api/validate/avilableWeeks',
+                );
                 data = data.data;
                 setState({
                     displayErrorPage: false,
@@ -50,7 +52,7 @@ export default function CreateReport() {
     const onFinish = async (values) => {
         try {
             await axios.post(
-                '/api/reports',
+                'https://jsramverk.nicklaspoke.se/api/reports',
                 { ...values },
                 {
                     headers: {

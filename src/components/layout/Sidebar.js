@@ -22,7 +22,8 @@ export default function Sidebar() {
     const context = useContext(AppContext);
     let history = useHistory();
     const handleLogOut = () => {
-        const requestLogout = async () => await axios.get('/api/auth/logout');
+        const requestLogout = async () =>
+            await axios.get('https://jsramverk.nicklaspoke.se/api/auth/logout');
         requestLogout();
         context.setIsLoggedIn(false);
         history.push('/auth/login');

@@ -32,13 +32,13 @@ function App() {
     };
     useEffect(() => {
         const getCSRF = async () => {
-            const res = await axios.get('/api/auth/get-csrf-token');
+            const res = await axios.get('https://jsramverk.nicklaspoke.se/api/auth/get-csrf-token');
             userSettings.setCSRFToken(res.data.csrfToken);
             axios.defaults.headers['X-CSRF-Token'] = res.data.csrfToken;
         };
         const checkLogInStatus = async () => {
             try {
-                await axios.get('/api/auth/authCheck');
+                await axios.get('https://jsramverk.nicklaspoke.se/api/auth/authCheck');
 
                 userSettings.setIsLoggedIn(true);
             } catch (error) {

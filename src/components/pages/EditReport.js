@@ -20,9 +20,11 @@ export default function EditReport() {
     useEffect(() => {
         const getAvilableWeeks = async () => {
             try {
-                await axios.get('/api/auth/authCheck');
+                await axios.get('https://jsramverk.nicklaspoke.se/api/auth/authCheck');
 
-                let data = await axios.get('/api/validate/populatedWeeks');
+                let data = await axios.get(
+                    'https://jsramverk.nicklaspoke.se/api/validate/populatedWeeks',
+                );
                 data = data.data;
                 setState({
                     displayErrorPage: false,
@@ -46,7 +48,7 @@ export default function EditReport() {
     }, []);
 
     const handleChange = async (e) => {
-        let data = await axios.get(`/api/reports/week/${e}`);
+        let data = await axios.get(`https://jsramverk.nicklaspoke.se/api/reports/week/${e}`);
         data = data.data;
         setState({
             ...state,
@@ -59,7 +61,7 @@ export default function EditReport() {
 
     const onFinish = async (values) => {
         let res = await axios.put(
-            `/api/reports/week/${values.week}`,
+            `https://jsramverk.nicklaspoke.se/api/reports/week/${values.week}`,
             { ...values },
             {
                 headers: {
