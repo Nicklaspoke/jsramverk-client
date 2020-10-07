@@ -1,0 +1,28 @@
+language: node_js
+
+env:
+    global:
+        - MOZ_HEADLESS=1
+
+addons:
+    firefox: latest
+
+node_js:
+    - 'node'
+    - 'lts/*'
+
+sudo: false
+
+git:
+    submodules: false
+
+before_script:
+    - npm install
+    - npm run build
+    - npm run serve
+
+script:
+    - npm test
+
+after_success:
+    - npm run lint
