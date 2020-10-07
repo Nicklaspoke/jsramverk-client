@@ -20,7 +20,7 @@ git:
 before_script:
     - npm install
     - npm run build:prod
-    - npm run serve
+    - npm run serve &
 
 script:
     - npm test
