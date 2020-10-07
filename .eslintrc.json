@@ -3,7 +3,7 @@
         "browser": true,
         "es2021": true
     },
-    "extends": ["plugin:prettier/recommended", "prettier/react"],
+    "extends": ["plugin:prettier/recommended", "plugin:mocha/recommended", "prettier/react"],
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -11,9 +11,21 @@
         "ecmaVersion": 12,
         "sourceType": "module"
     },
-    "plugins": ["prettier", "react"],
+    "plugins": ["prettier", "react", "mocha"],
     "rules": {
         "prettier/prettier": "error",
         "linebreak-style": ["error", "unix"]
-    }
+    },
+
+    "overrides": [
+        {
+            "files": ["test/**"],
+            "rules": {
+                "no-undef": "off",
+                "no-unused-expressions": "off",
+                "no-shadow": "off",
+                "mocha/no-setup-in-describe": "off"
+            }
+        }
+    ]
 }

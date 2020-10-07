@@ -1,7 +1,7 @@
-const test = require("selenium-webdriver\\testing");
+const test = require('selenium-webdriver\\testing');
 const webdriver = require('selenium-webdriver');
 const chai = require('chai');
-const { elementIsVisible } = require("selenium-webdriver/lib/until");
+const { elementIsVisible } = require('selenium-webdriver/lib/until');
 
 chai.should();
 
@@ -19,19 +19,24 @@ function inputIntoInput(id, value) {
     browser.findElement(By.id(id)).then(function (element) {
         element.click();
         element.sendKeys(value);
-    })
+    });
 }
 
 function assertElementValue(id, value) {
-    browser.findElement(By.id(id)).getAttribute("value").then(function (text) {
-        text.should.be.equal(value)
-    })
+    browser
+        .findElement(By.id(id))
+        .getAttribute('value')
+        .then(function (text) {
+            text.should.be.equal(value);
+        });
 }
 
 test.describe('Function Tests', function () {
     test.beforeEach(function (done) {
         this.timeout(20000);
-        browser = new webdriver.Builder().withCapabilities(webdriver.Capabilities.firefox()).build();
+        browser = new webdriver.Builder()
+            .withCapabilities(webdriver.Capabilities.firefox())
+            .build();
         browser.get('http://localhost:3000/');
 
         done();
@@ -44,63 +49,85 @@ test.describe('Function Tests', function () {
 
     test.it('Test Login Function', function (done) {
         browser.getTitle().then(function (title) {
-            title.should.be.equal('JSRamverk Me-Page')
+            title.should.be.equal('JSRamverk Me-Page');
         });
 
         goToNavLink('Log In');
 
-        browser.wait(until.elementIsVisible(browser.findElement(By.id('login_email'))), 10000)
+        browser.wait(until.elementIsVisible(browser.findElement(By.id('login_email'))), 10000);
 
         browser.getCurrentUrl().then(function (url) {
             url.endsWith('/auth/login').should.be.true;
-        })
+        });
 
-        inputIntoInput('login_email', 'admin@admin.se')
-        inputIntoInput('login_password', 'admin')
+        inputIntoInput('login_email', 'admin@admin.se');
+        inputIntoInput('login_password', 'admin');
 
         browser.findElement(By.className('login-form-button')).then(function (element) {
             element.click();
         });
 
-        browser.wait(until.urlIs('http://localhost:3000/'), 1000)
-        browser.wait(until.elementIsVisible(browser.findElement(By.className("ant-layout-content"))), 1000)
+        browser.wait(until.urlIs('http://localhost:3000/'), 1000);
+        browser.wait(
+            until.elementIsVisible(browser.findElement(By.className('ant-layout-content'))),
+            1000,
+        );
 
         browser.getCurrentUrl().then(function (url) {
             url.endsWith('/').should.be.true;
-        })
+        });
 
-        browser.findElement(By.css("#root > div > section > section > section > div > main > div > h1")).then(function (element) {
-            element.getText().then(function (text) {
-                text.should.be.equal('Well hello there fellow traveller of the internet')
-            })
-        })
+        browser
+            .findElement(
+                By.css('#root > div > section > section > section > div > main > div > h1'),
+            )
+            .then(function (element) {
+                element.getText().then(function (text) {
+                    text.should.be.equal('Well hello there fellow traveller of the internet');
+                });
+            });
         done();
     });
 
     //Test going to and viewing a report page
     test.it('Go to a report page', function (done) {
-        browser.findElement(By.css("#root > div > section > section > aside > div > ul > li.ant-menu-submenu.ant-menu-submenu-inline > div")).then(function (element) {
-            element.click()
-        })
+        browser
+            .findElement(
+                By.css(
+                    '#root > div > section > section > aside > div > ul > li.ant-menu-submenu.ant-menu-submenu-inline > div',
+                ),
+            )
+            .then(function (element) {
+                element.click();
+            });
         goToNavLink('kmom03');
 
-        browser.wait(until.urlIs('http://localhost:3000/reports/week/3'), 1000)
-        browser.wait(until.elementIsVisible(browser.findElement(By.css("#root > div > section > section > section > div > main > h1"))), 1000)
+        browser.wait(until.urlIs('http://localhost:3000/reports/week/3'), 1000);
+        browser.wait(
+            until.elementIsVisible(
+                browser.findElement(
+                    By.css('#root > div > section > section > section > div > main > h1'),
+                ),
+            ),
+            1000,
+        );
 
         //Should have the correct H1 set
-        browser.findElement(By.css("#root > div > section > section > section > div > main > h1")).then(function (element) {
-            element.getText().then(function (text) {
-                text.should.be.equal('Kmom03')
-            })
-        })
+        browser
+            .findElement(By.css('#root > div > section > section > section > div > main > h1'))
+            .then(function (element) {
+                element.getText().then(function (text) {
+                    text.should.be.equal('Kmom03');
+                });
+            });
 
         //Should have the correct URL in the navbar
         browser.getCurrentUrl().then(function (url) {
             url.endsWith('/reports/week/3').should.be.true;
-        })
+        });
 
         done();
-    })
+    });
 
     test.it('Go to and fill out registration form', function (done) {
         goToNavLink('Register New Account');
@@ -118,5 +145,5 @@ test.describe('Function Tests', function () {
         assertElementValue('register_confirm-password', 'qwerty12345');
 
         done();
-    })
-})
+    });
+});
