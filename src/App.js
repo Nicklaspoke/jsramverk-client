@@ -19,7 +19,7 @@ import CreateReport from './components/pages/CreateReport';
 import EditReport from './components/pages/EditReport';
 
 function App() {
-    // const location = useLocation();
+    const location = useLocation();
 
     // Global state variables and functions
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,7 +57,7 @@ function App() {
                         <Sidebar />
                         <Layout style={{ minHeight: '80vh', position: 'relative' }}>
                             <AnimatePresence>
-                                <Switch>
+                                <Switch location={location} key={location.pathname}>
                                     <Route exact path="/" component={Index} />
                                     <Route path="/reports/week/:week/" component={Reports} />
                                     <Route path="/auth/login" component={Login} />
