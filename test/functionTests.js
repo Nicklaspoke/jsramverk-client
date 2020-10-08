@@ -77,15 +77,15 @@ test.describe('Function Tests', function () {
             url.endsWith('/').should.be.true;
         });
 
-        browser
-            .findElement(
-                By.css('#root > div > section > section > section > div > main > div > h1'),
-            )
-            .then(function (element) {
-                element.getText().then(function (text) {
-                    text.should.be.equal('Well hello there fellow traveller of the internet');
-                });
-            });
+        // browser
+        //     .findElement(
+        //         By.css('#root > div > section > section > section > div > main > div > h1'),
+        //     )
+        //     .then(function (element) {
+        //         element.getText().then(function (text) {
+        //             text.should.be.equal('Well hello there fellow traveller of the internet');
+        //         });
+        //     });
         done();
     });
 
