@@ -1,4 +1,4 @@
-const test = require('selenium-webdriver\\testing');
+const test = require('selenium-webdriver/testing');
 const webdriver = require('selenium-webdriver');
 const chai = require('chai');
 const { elementIsVisible } = require('selenium-webdriver/lib/until');
